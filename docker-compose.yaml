@@ -16,7 +16,7 @@ services:
     environment:
       - HUB_HOST=hub
   search-module:
-    image: chethanr/selenium-docker
+    image: chethanr18/selenium-docker
     depends_on:
       - chrome
       - firefox
