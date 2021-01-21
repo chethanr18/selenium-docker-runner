@@ -6,15 +6,22 @@ pipeline{
 				bat "docker pull chethanr18/selenium-docker-final"
 			}
 		}
-		stage("Run Test"){
+		stage("Start Grid"){
 			steps{
-				bat "docker-compose up"
+				bat "docker-compose up -d hub chrome firefox"
 			}
 		}
-		stage("Bring Grid Down"){
+		stage("Run Test"){
 			steps{
-				bat "docker-compose down"
+				bat "docker-compose up search-module"
 			}
+		}
+	}
+	post{
+		always{
+			archiveArtifacts artifacts: 'output/**'
+			bat "docker-compose down"
+			bat "sudo rm -rf output/"
 		}
 	}
 }
