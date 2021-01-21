@@ -1,9 +1,14 @@
 pipeline{
 	agent any
 	stages{
-		stage("Run Test"){
+		stage("Pull Latest Image"){
 			steps{
-				bat "docker-compose up -d hub chrome firefox"
+				sh "docker pull chethanr18/selenium-docker-final"
+			}
+		}
+		stage("Start Grid"){
+			steps{
+				sh "docker-compose up -d hub chrome firefox"
 			}
 		}
 		stage("Run Test"){
@@ -11,9 +16,12 @@ pipeline{
 				sh "docker-compose up search-module"
 			}
 		}
-		stage("Stop Grid") {
-			steps {
-				bat "docker-compose down"
+	}
+	post{
+		always{
+			archiveArtifacts artifacts: 'output/**'
+			sh "docker-compose down"
+			sh "sudo rm -rf output/"
 		}
 	}
 }
