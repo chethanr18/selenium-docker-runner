@@ -12,17 +12,18 @@ services:
             - HUB_HOST=hub
     firefox:
         image: selenium/node-firefox:3.14
+        shm_size: '1gb'
         depends_on:
             - hub
         environment:
             - HUB_HOST=hub       
     search-module:
-        image: chethanr18/selenium-docker
+        image: chethanr18/selenium-docker-final
         depends_on:
             - chrome
             - firefox
         environment:
-            - BROWSER=firefox
+            - BROWSER=chrome
             - HUB_HOST=hub
             - MODULE=search-module.xml
         volumes:
